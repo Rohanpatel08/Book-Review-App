@@ -53,7 +53,6 @@ class BookController extends Controller
      */
     public function store(BookStoreRequest $request)
     {
-        // dd($request);
         if (!empty($request->image)) {
             $image = $request->image;
             $ext = $image->getClientOriginalExtension();
