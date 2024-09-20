@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -18,13 +20,36 @@ class ProfileController extends Controller
     }
     public function updateProfile(ProfileUpdateRequest $request)
     {
-        $user = User::find(Auth::user()->id);
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        try {
+            $user = Auth::user();
 
-        return redirect()->route('profile')->with('success', 'Profile has been updated');
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
+            if ($request->hasFile('profile')) {
+
+                if ($user->profile && file_exists(public_path('images/' . $user->profile))) {
+                    // Remove the old profile image
+                    unlink(public_path('images/' . $user->profile));
+                }
+
+                $fileWithExt = $request->file('profile')->getClientOriginalExtension();
+
+
+                $fileName = time() . '.' . $fileWithExt;
+
+                $path = $request->file('profile')->move(public_path('images'), $fileName);
+
+                $data['profile'] = $fileName;
+            }
+            $user->update($data);
+            return redirect()->route('profile')->with('success', 'Profile has been updated');
+        } catch (Exception $e) {
+
+            Log::info($e->getMessage());
+            return redirect()->route('profile')->with('error', $e->getMessage());
+        }
     }
 
     public function changePassword()
@@ -53,19 +78,6 @@ class ProfileController extends Controller
 
     public function verifyEmail(Request $request)
     {
-        // $request->validate([
-        //     'email' => 'required|email'
-        // ]);
-
-        // $user = User::where('email', $request->email)->first();
-
-        // if (!$user) {
-        //     return response()->json(['message' => 'User not found'], 404);
-        // }
-
-        // if ($user->hasVerifiedEmail()) {
-        //     return response()->json(['message' => 'Email already verified'], 400);
-        // }
         return view('auth.verify-email');
     }
 
