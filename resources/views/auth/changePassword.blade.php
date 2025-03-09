@@ -11,34 +11,11 @@
 </head>
 
 <body>
-    <div class="container-fluid shadow-lg header">
-        <div class="container">
-            <div class="d-flex justify-content-between">
-                <h1 class="text-center"><a href="index.html" class="h3 text-white text-decoration-none">Book Review App</a></h1>
-                <div class="d-flex align-items-center navigation">
-                    <a href="login.html" class="text-white">{{Auth::user()->name}}</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('components.navbar')
 
     <div class="container">
         <div class="row my-5">
             <div class="col-md-3">
-                <div class="card border-0 shadow-lg">
-                    <div class="card-header  text-white">
-                        Welcome, {{Auth::user()->name}}
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center mb-3">
-                            <img src="{{asset('images/profile-img-1.jpg')}}" class="img-fluid rounded-circle" alt="Luna John">
-                        </div>
-                        <div class="h5 text-center">
-                            <strong>{{Auth::user()->name}}</strong>
-                            <p class="h6 mt-2 text-muted">5 Reviews</p>
-                        </div>
-                    </div>
-                </div>
                 @include('components.sidebar')
             </div>
             <div class="col-md-9">
