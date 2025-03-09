@@ -4,7 +4,7 @@
     </div>
     <div class="card-body">
         <div class="text-center mb-3">
-            <img src="{{asset('images/profile-img-1.jpg')}}" class="img-fluid rounded-circle" alt="Luna John">
+            <img src="{{asset(Auth::user()->profile ? 'images/'.Auth::user()->profile : 'images/default.jpg')}}" class="img-fluid rounded-circle profile-pic" alt="{{Auth::user()->name}}">
         </div>
         <div class="h5 text-center">
             <strong>{{Auth::user()->name}}</strong>

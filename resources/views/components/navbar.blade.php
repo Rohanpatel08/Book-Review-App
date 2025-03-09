@@ -8,7 +8,7 @@
                 <a href="{{route('reviews.index')}}" class="text-white mx-3">Reviews</a>
                 <a href="{{route('books.index')}}" class="text-white mx-3">Books</a>
                 @endif
-                <a href="{{route('profile')}}" class="text-white">{{Auth::user()->name}}</a>
+                <a href="{{route('profile')}}"><img src="{{asset(Auth::user()->profile ? 'images/'.Auth::user()->profile : 'images/default.jpg')}}" id="nav-profile-img" alt=""></a>
             </div>
         </div>
     </div>
