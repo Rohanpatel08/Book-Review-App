@@ -19,7 +19,7 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'name' => 'string',
             'email' => 'email|unique:users,email,' . Auth::user()->id . ',id',
-            'profile' => 'image|max:2048'
+            'profile' => 'image|max:5120|mimetypes:image/jpeg,image/png',
         ];
     }
 }
